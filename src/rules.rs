@@ -1,15 +1,11 @@
 #[macro_export]
 macro_rules! rule_required {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if obj.$name.is_none() {
                     error.add("required");
-                } else if let Some(v) = &obj.$name {
-                    if v.is_empty() {
-                        error.add("required");
-                    }
                 }
             },
         )
@@ -19,7 +15,7 @@ macro_rules! rule_required {
 #[macro_export]
 macro_rules! rule_email {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -35,7 +31,7 @@ macro_rules! rule_email {
 #[macro_export]
 macro_rules! rule_url {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -51,7 +47,7 @@ macro_rules! rule_url {
 #[macro_export]
 macro_rules! rule_phone {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -67,7 +63,7 @@ macro_rules! rule_phone {
 #[macro_export]
 macro_rules! rule_non_control_character {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -83,7 +79,7 @@ macro_rules! rule_non_control_character {
 #[macro_export]
 macro_rules! rule_ip {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -99,7 +95,7 @@ macro_rules! rule_ip {
 #[macro_export]
 macro_rules! rule_ip_v4 {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -115,7 +111,7 @@ macro_rules! rule_ip_v4 {
 #[macro_export]
 macro_rules! rule_ip_v6 {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -131,7 +127,7 @@ macro_rules! rule_ip_v6 {
 #[macro_export]
 macro_rules! rule_credit_card {
     ($name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -147,7 +143,7 @@ macro_rules! rule_credit_card {
 #[macro_export]
 macro_rules! rule_contains {
     ($name:ident, $needle:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -163,7 +159,7 @@ macro_rules! rule_contains {
 #[macro_export]
 macro_rules! rule_equalt_to {
     ($name:ident, $second_name:ident) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if obj.$name.is_some() && obj.$name.is_some() {
@@ -183,7 +179,7 @@ macro_rules! rule_equalt_to {
 #[macro_export]
 macro_rules! rule_in {
     ($name:ident, $items:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -203,7 +199,7 @@ macro_rules! rule_in {
 #[macro_export]
 macro_rules! rule_lenght_min {
     ($name:ident, $min:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -219,7 +215,7 @@ macro_rules! rule_lenght_min {
 #[macro_export]
 macro_rules! rule_lenght_max {
     ($name:ident, $max:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -235,7 +231,7 @@ macro_rules! rule_lenght_max {
 #[macro_export]
 macro_rules! rule_lenght_eq {
     ($name:ident, $eq:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -251,7 +247,7 @@ macro_rules! rule_lenght_eq {
 #[macro_export]
 macro_rules! rule_range {
     ($name:ident, $min:expr, $max:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {
@@ -273,7 +269,7 @@ macro_rules! rule_range {
     };
 
     ($name:ident, $min:expr) => {
-        $crate::rule::Rule::new(
+        $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
                 if let Some(v) = &obj.$name {

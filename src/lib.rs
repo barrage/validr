@@ -12,9 +12,11 @@
 ///
 /// usage:
 /// ```rust
-/// use serde::Deserialize;
 /// #[macro_use]
 /// use validr::*;
+/// use serde::Deserialize;
+/// use actix_web::{web, HttpResponse, ResponseError};
+///
 ///
 /// #[derive(Clone, Deserialize, Debug)]
 /// struct TestObj {
@@ -23,13 +25,13 @@
 ///     pub age: Option<u8>
 /// }
 ///
-/// impl Validr for TestObj {
+/// impl Validation for TestObj {
 ///     fn modifiers(&self) -> Vec<Modifier<Self>> {
-///         vec![Modifier::new("name", |obj: &mut Self| {
-///             if let Some(v) = &obj.name {
-///                 obj.name = Some(v.trim().to_string());
-///             }
-///         })]
+///         vec![
+///             modifier_trim!(name),
+///             modifier_capitalize!(name),
+///             modifier_lowercase!(email),
+///         ]
 ///     }
 ///
 ///     fn rules(&self) -> Vec<Rule<Self>> {
@@ -40,23 +42,35 @@
 ///         ]
 ///     }
 /// }
-/// 
-/// pub fn handler_for_some_route()
+///
+/// async fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
+///     match test.into_inner().validate() {
+///         Ok(item) => {
+///             println!("This is your data validated and modified: {:?}", item);
+///             HttpResponse::Ok().body("Validation passed!")
+///         },
+///         Err(e) => e.error_response(),
+///     }
+/// }
 /// ```
 ///
-pub mod error;
-pub mod modifier;
-pub mod rule;
+mod modifier;
+mod modifiers;
+mod rule;
 mod rules;
+
+pub mod error;
 pub mod validator;
 
 use serde::Deserialize;
 
+pub use crate::validator::Validator;
 pub use modifier::Modifier;
+pub use modifiers::*;
 pub use rule::Rule;
 pub use rules::*;
 
-pub trait Validr: Clone + for<'de> Deserialize<'de> {
+pub trait Validation: Clone + for<'de> Deserialize<'de> {
     /// Method that is intended to return vector of all the validation rules
     fn rules(&self) -> Vec<Rule<Self>> {
         vec![]
@@ -74,7 +88,7 @@ pub trait Validr: Clone + for<'de> Deserialize<'de> {
         let rules = self.rules();
         let modifiers = self.modifiers();
 
-        let mut validator = validator::Validator::new(self);
+        let mut validator = Validator::new(self);
 
         for rule in rules {
             validator = validator.add_validation(rule);
@@ -91,6 +105,7 @@ pub trait Validr: Clone + for<'de> Deserialize<'de> {
 #[cfg(test)]
 mod test {
     use super::*;
+    use actix_web::{http, web, HttpResponse, ResponseError};
     use serde::Deserialize;
 
     #[derive(Clone, Deserialize, Debug)]
@@ -103,13 +118,13 @@ mod test {
         pub ip_v6: Option<String>,
     }
 
-    impl Validr for TestObj {
+    impl Validation for TestObj {
         fn modifiers(&self) -> Vec<Modifier<Self>> {
-            vec![Modifier::new("name", |obj: &mut Self| {
-                if let Some(v) = &obj.name {
-                    obj.name = Some(v.trim().to_string());
-                }
-            })]
+            vec![
+                modifier_trim!(name),
+                modifier_capitalize!(name),
+                modifier_lowercase!(email),
+            ]
         }
 
         fn rules(&self) -> Vec<Rule<Self>> {
@@ -131,10 +146,38 @@ mod test {
         }
     }
 
+    /// Test actix route handler
+    async fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
+        match test.into_inner().validate() {
+            Ok(item) => {
+                println!("This is your data validated and modified: {:?}", item);
+                HttpResponse::Ok().body("Validation passed!")
+            }
+            Err(e) => e.error_response(),
+        }
+    }
+
+    #[actix_web::main]
     #[test]
-    fn test_it_will_trim_name() {
+    async fn test_actix_integration_fails_validation() {
+        let data = TestObj {
+            name: None,
+            email: None,
+            age: None,
+            ip: None,
+            ip_v4: None,
+            ip_v6: None,
+        };
+
+        let response = test_actix_route_handler(web::Json(data)).await;
+
+        assert_eq!(response.status(), http::StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    #[test]
+    fn test_it_will_trim_and_capitalize_name() {
         let obj = TestObj {
-            name: Some(" John".to_string()),
+            name: Some(" john".to_string()),
             email: None,
             age: None,
             ip: None,

@@ -1,5 +1,9 @@
+use actix_http::{Error, Response};
+use actix_web::{HttpRequest, HttpResponse, Responder, ResponseError};
+use futures_util::future::{ok, Ready};
 use serde::Serialize;
 use std::collections::HashMap;
+use std::error::Error as StdError;
 
 #[derive(Clone, Debug, Serialize)]
 pub struct ValidationError {
@@ -88,5 +92,38 @@ impl ValidationErrors {
         } else {
             Err(())
         }
+    }
+}
+
+/// Allow the use of "{}" format specifier
+impl std::fmt::Display for ValidationErrors {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+/// Implement std::error::Error for ValidationErrors
+impl StdError for ValidationErrors {
+    fn cause(&self) -> Option<&dyn StdError> {
+        Some(self)
+    }
+}
+
+/// Allow the error to be returned in actix as error response
+impl ResponseError for ValidationErrors {
+    fn error_response(&self) -> HttpResponse {
+        HttpResponse::UnprocessableEntity().json(self)
+    }
+}
+
+/// Allow the error to be returned into responder for actix right away
+impl Responder for ValidationErrors {
+    type Error = ValidationErrors;
+
+    type Future = Ready<Result<Response, Self::Error>>;
+
+    fn respond_to(self, _: &HttpRequest) -> Self::Future {
+        let err: Error = self.into();
+        ok(err.into())
     }
 }
