@@ -1,14 +1,9 @@
 /// # Validr
-/// Is a validation package made for internal project, we tried using other crates that were available
-/// but none of them were quite what we were looking for and required us to either edit them too much
-/// or bend over backwards to make them work the way we wanted to.
+///
+/// Is a validation crate.
 ///
 /// Validr will allow you to modify your payload after it has been deserialized and then
 /// will validate it with the rules you give it.
-///
-/// It does not assume most of the things except that all of the attributes on your struct
-/// are `Option` type and you are using the `required` rule to validate them and make sure
-/// they contain value that you need.
 ///
 /// usage:
 /// ```rust
@@ -54,6 +49,285 @@
 /// }
 /// ```
 ///
+/// # Validation rules
+/// There are some rules predefined and provided for you in a form of a macro
+/// to simply include in your validation.
+///
+/// ## Required
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present
+/// For `String` it will check if it's not empty.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_required!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Email
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid email
+/// For `String` it will check if it's valid email.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_email!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Url
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid url
+/// For `String` it will check if it's valid url.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_url!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Phone
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid phone number
+/// For `String` it will check if it's valid phone number.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_phone!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Non Control Character
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and has no control characters
+/// For `String` it will check if the field has no control characters
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_non_control_character!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## IP
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid IP
+/// For `String` it will check if it's valid IP.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_ip!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## IP V4
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid IP V4
+/// For `String` it will check if it's valid IP V4.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_ip_v4!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## IP V6
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid IP V6
+/// For `String` it will check if it's valid IP V6.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_ip_v6!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Credit card
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and valid CC number
+/// For `String` it will check if it's valid CC number.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_credit_card!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Contains
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and contains given `needle`
+/// For `String` it will check if it contains given `needle`.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_contains!(field_name_on_self, "needle")]
+/// }
+/// ```
+///
+/// ## Equal to
+///
+/// It validates if two given field names are equal.
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_equalt_to!(field_name_on_self, field_name_to_compare_to_on_self)]
+/// }
+/// ```
+///
+/// ## In
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and will match its value to haystack of values
+/// For `String` it will check if its in the haystack value
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![
+///         rule_in!(field_name_on_self, vec![
+///             "allowed_value".to_string(),
+///             "another_allowed_value".to_string()
+///         ]),
+///     ]
+/// }
+/// ```
+///
+/// ## Lenght min
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and has `min` number of chars
+/// For `String` it will check if it has `min` number of chars
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_lenght_min!(field_name_on_self, 2)]
+/// }
+/// ```
+///
+/// ## Lenght max
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and has `max` number of chars
+/// For `String` it will check if it has `max` number of chars
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_lenght_max!(field_name_on_self, 15)]
+/// }
+/// ```
+///
+/// ## Lenght equal
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and has `eq` number of chars
+/// For `String` it will check if it has `eq` number of chars
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_lenght_eq!(field_name_on_self, 10)]
+/// }
+/// ```
+///
+/// ## Lenght not equal
+///
+/// For `Option<T: ToString + Clone>` it will check if the field is present and has `ne` number of chars
+/// For `String` it will check if it has `ne` number of chars
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_lenght_ne!(field_name_on_self, 11)]
+/// }
+/// ```
+///
+/// ## Range
+///
+/// For `Option<T: Into<f64> + PartialOrd + Clone>` it will check that the value is present and within given range.
+/// For `T: Into<f64>` it will check if the value is in the given range
+///
+/// ```rust,ignore
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![rule_range!(field_name_on_self, 11)]
+/// }
+/// ```
+///
+/// ## Custom validation rule
+///
+/// You can always implement a custom validation rule by instead of using provided
+/// macros generate your own `Rule::new()` definition:
+///
+/// ```rust,ignore
+/// use validr::{Rule, ValidationError};
+/// fn rules(&self) -> Vec<Rule<Self>> {
+///     vec![
+///         Rule::new("field_name", |obj: &Self, error: &mut ValidationError| {
+///             if obj.field_name != "some_validation_rule".to_string() {
+///                 error.add("my_custom_error_code");
+///             }
+///         }),
+///     ]
+/// }
+/// ```
+///
+/// # Field modifiers
+/// Before running validation rules you can modify the input data to format it in whatever way you want.
+/// There are some modifiers included, but you can certainly create a custom one to do whatever you want.
+///
+/// ## Trim
+///
+/// For `Option<String>` it will check if there is some value and will run the trim on the value.
+/// For `String` it will simply trim it
+///
+/// ```rust,ignore
+/// fn modifiers(&self) -> Vec<Modifier<Self>> {
+///     vec![modifier_trim!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Lowercase
+///
+/// For `Option<String>` it will check if there is some value and will run the lowercase on the value.
+/// For `String` it will simply lowercase it
+///
+/// ```rust,ignore
+/// fn modifiers(&self) -> Vec<Modifier<Self>> {
+///     vec![modifier_lowercase!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Uppercase
+///
+/// For `Option<String>` it will check if there is some value and will run the uppercase on the value.
+/// For `String` it will simply uppercase it
+///
+/// ```rust,ignore
+/// fn modifiers(&self) -> Vec<Modifier<Self>> {
+///     vec![modifier_uppercase!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Capitalize
+///
+/// For `Option<String>` it will check if there is some value and will run the capitalize on the value.
+/// For `String` it will simply capitalize it
+///
+/// Capitalize means it will turn the first char of the string to uppercase, and everything else will be lowercase
+///
+/// ```rust,ignore
+/// fn modifiers(&self) -> Vec<Modifier<Self>> {
+///     vec![modifier_capitalize!(field_name_on_self)]
+/// }
+/// ```
+///
+/// ## Custom modifier
+///
+/// Implementing custom modifier is similar to custom validation rule, you will provide a custom
+/// implementation of `Modifier::new()`:
+///
+/// ```rust,ignore
+/// use validr::Modifier;
+/// fn modifiers(&self) -> Vec<Modifier<Self>> {
+///     vec![
+///         Modifier::new("field_name", |obj: &mut Self| {
+///             obj.field_name = "new_value".to_string();
+///         }),
+///     ]
+/// }
+/// ```
+///
 mod modifier;
 mod modifiers;
 mod rule;
@@ -61,6 +335,7 @@ mod rules;
 
 pub mod error;
 pub mod validator;
+pub mod wrappers;
 
 use serde::Deserialize;
 
@@ -110,12 +385,13 @@ mod test {
 
     #[derive(Clone, Deserialize, Debug)]
     struct TestObj {
-        pub name: Option<String>,
+        pub name: String,
         pub email: Option<String>,
         pub age: Option<u8>,
         pub ip: Option<String>,
         pub ip_v4: Option<String>,
         pub ip_v6: Option<String>,
+        pub another_name: String,
     }
 
     impl Validation for TestObj {
@@ -133,7 +409,7 @@ mod test {
                 rule_lenght_min!(name, 2),
                 rule_lenght_max!(name, 10),
                 rule_email!(email),
-                rule_range!(age, Some(&15), Some(&25)),
+                rule_range!(age, Some(15.5), Some(25)),
                 rule_in!(
                     email,
                     vec!["test@test.com".to_string(), "test2@test.com".to_string()]
@@ -161,12 +437,13 @@ mod test {
     #[test]
     async fn test_actix_integration_fails_validation() {
         let data = TestObj {
-            name: None,
+            name: "".to_string(),
             email: None,
             age: None,
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         let response = test_actix_route_handler(web::Json(data)).await;
@@ -175,30 +452,49 @@ mod test {
     }
 
     #[test]
-    fn test_it_will_trim_and_capitalize_name() {
+    fn test_it_will_trim_name() {
         let obj = TestObj {
-            name: Some(" john".to_string()),
+            name: " John".to_string(),
             email: None,
             age: None,
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         let response = obj.validate().unwrap();
 
-        assert_eq!(response.name, Some("John".to_string()));
+        assert_eq!(response.name, "John".to_string());
+    }
+
+    #[test]
+    fn test_it_will_capitalize_name() {
+        let obj = TestObj {
+            name: "john".to_string(),
+            email: None,
+            age: None,
+            ip: None,
+            ip_v4: None,
+            ip_v6: None,
+            another_name: "".to_string(),
+        };
+
+        let response = obj.validate().unwrap();
+
+        assert_eq!(response.name, "John".to_string());
     }
 
     #[test]
     fn test_if_will_fail_required_name() {
         let obj = TestObj {
-            name: None,
+            name: "".to_string(),
             email: None,
             age: None,
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -213,12 +509,13 @@ mod test {
     #[test]
     fn test_if_will_fail_name_too_short() {
         let obj = TestObj {
-            name: Some("a".to_string()),
+            name: "a".to_string(),
             email: None,
             age: None,
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -233,12 +530,13 @@ mod test {
     #[test]
     fn test_if_will_fail_valid_email() {
         let obj = TestObj {
-            name: None,
+            name: "".to_string(),
             email: Some("test_wrong_email.com".to_string()),
             age: None,
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -253,12 +551,13 @@ mod test {
     #[test]
     fn test_if_it_fail_age_test() {
         let obj = TestObj {
-            name: Some("John".to_string()),
+            name: "John".to_string(),
             email: Some("test@test.com".to_string()),
             age: Some(12),
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -271,21 +570,44 @@ mod test {
     }
 
     #[test]
-    fn test_age_fails_in_rule_and_range_rule_together() {
+    fn test_age_fails_in_rule() {
         let obj = TestObj {
-            name: Some("John".to_string()),
+            name: "John".to_string(),
+            email: Some("test@test.com".to_string()),
+            age: Some(18),
+            ip: None,
+            ip_v4: None,
+            ip_v6: None,
+            another_name: "".to_string(),
+        };
+
+        match obj.validate() {
+            Ok(_) => panic!("Was expected to validate 'in_rule' age property"),
+            Err(e) => match e.get_error("age") {
+                Ok(e) => {
+                    assert!(e.contains("in"));
+                }
+                Err(_) => panic!("Seems like there is no error for 'age' field"),
+            },
+        };
+    }
+
+    #[test]
+    fn test_age_fails_range_rule() {
+        let obj = TestObj {
+            name: "John".to_string(),
             email: Some("test@test.com".to_string()),
             age: Some(27),
             ip: None,
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
-            Ok(_) => panic!("Was expected to validate 'in_rule' and 'range' age property"),
+            Ok(_) => panic!("Was expected to validate 'range' age property"),
             Err(e) => match e.get_error("age") {
                 Ok(e) => {
-                    assert!(e.contains("in"));
                     assert!(e.contains("range"));
                 }
                 Err(_) => panic!("Seems like there is no error for 'age' field"),
@@ -296,12 +618,13 @@ mod test {
     #[test]
     fn test_if_ip_fails() {
         let obj = TestObj {
-            name: Some("John".to_string()),
+            name: "John".to_string(),
             email: Some("test@test.com".to_string()),
             age: Some(12),
             ip: Some("invalid_ip".to_string()),
             ip_v4: None,
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -316,12 +639,13 @@ mod test {
     #[test]
     fn test_if_ip_v4_fails() {
         let obj = TestObj {
-            name: Some("John".to_string()),
+            name: "John".to_string(),
             email: Some("test@test.com".to_string()),
             age: Some(12),
             ip: None,
             ip_v4: Some("invalid_ip_v4".to_string()),
             ip_v6: None,
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -336,12 +660,13 @@ mod test {
     #[test]
     fn test_if_ip_v6_fails() {
         let obj = TestObj {
-            name: Some("John".to_string()),
+            name: "John".to_string(),
             email: Some("test@test.com".to_string()),
             age: Some(12),
             ip: None,
             ip_v4: None,
             ip_v6: Some("invalid_ip_v6".to_string()),
+            another_name: "".to_string(),
         };
 
         match obj.validate() {
@@ -356,12 +681,13 @@ mod test {
     #[test]
     fn test_if_ips_are_ok() {
         let obj = TestObj {
-            name: Some("John".to_string()),
+            name: "John".to_string(),
             email: Some("test@test.com".to_string()),
             age: Some(12),
             ip: Some("127.0.0.1".to_string()),
             ip_v4: Some("127.0.0.1".to_string()),
             ip_v6: Some("::1".to_string()),
+            another_name: "".to_string(),
         };
 
         match obj.validate() {

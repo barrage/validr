@@ -5,7 +5,7 @@ use serde::Serialize;
 use std::collections::HashMap;
 use std::error::Error as StdError;
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, PartialEq)]
 pub struct ValidationError {
     field: String,
     errors: Vec<String>,
@@ -44,7 +44,7 @@ impl ValidationError {
     }
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, PartialEq)]
 pub struct ValidationErrors {
     errors: HashMap<String, ValidationError>,
 }

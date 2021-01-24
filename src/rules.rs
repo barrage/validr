@@ -4,7 +4,11 @@ macro_rules! rule_required {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if obj.$name.is_none() {
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .required()
+                {
                     error.add("required");
                 }
             },
@@ -18,10 +22,9 @@ macro_rules! rule_email {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_email(v) {
-                        error.add("email");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name).0.email() {
+                    error.add("email");
                 }
             },
         )
@@ -34,10 +37,9 @@ macro_rules! rule_url {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_url(v) {
-                        error.add("url");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name).0.url() {
+                    error.add("url");
                 }
             },
         )
@@ -50,10 +52,9 @@ macro_rules! rule_phone {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_phone(v) {
-                        error.add("phone");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name).0.phone() {
+                    error.add("phone");
                 }
             },
         )
@@ -66,10 +67,12 @@ macro_rules! rule_non_control_character {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_non_control_character(v) {
-                        error.add("non_control_character");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .non_control_character()
+                {
+                    error.add("non_control_character");
                 }
             },
         )
@@ -82,10 +85,9 @@ macro_rules! rule_ip {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_ip(v) {
-                        error.add("ip");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name).0.ip() {
+                    error.add("ip");
                 }
             },
         )
@@ -98,10 +100,9 @@ macro_rules! rule_ip_v4 {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_ip_v4(v) {
-                        error.add("ip_v4");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name).0.ip_v4() {
+                    error.add("ip_v4");
                 }
             },
         )
@@ -114,10 +115,9 @@ macro_rules! rule_ip_v6 {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_ip_v6(v) {
-                        error.add("ip_v6");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name).0.ip_v6() {
+                    error.add("ip_v6");
                 }
             },
         )
@@ -130,10 +130,12 @@ macro_rules! rule_credit_card {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_credit_card(v) {
-                        error.add("credit_card");
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .credit_card()
+                {
+                    error.add("credit_card");
                 }
             },
         )
@@ -146,10 +148,12 @@ macro_rules! rule_contains {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_contains(v, $needle) {
-                        error.add(&format!("contains:{}", $needle));
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .rule_contains($needle)
+                {
+                    error.add(&format!("contains:{}", $needle));
                 }
             },
         )
@@ -162,14 +166,12 @@ macro_rules! rule_equalt_to {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if obj.$name.is_some() && obj.$name.is_some() {
-                    if obj.$name != obj.$second_name {
-                        error.add(
-                            "equalt_to:{}!={}",
-                            stringify!($name),
-                            stringify!($second_name),
-                        );
-                    }
+                if obj.$name != obj.$second_name {
+                    error.add(
+                        "equalt_to:{}!={}",
+                        stringify!($name),
+                        stringify!($second_name),
+                    );
                 }
             },
         )
@@ -182,14 +184,16 @@ macro_rules! rule_in {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !$items.contains(&v) {
-                        let string_items = $items
-                            .iter()
-                            .map(|x| x.to_string())
-                            .collect::<Vec<String>>();
-                        error.add(&format!("in:{}", string_items.join(",")));
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .r#in($items)
+                {
+                    let string_items = $items
+                        .iter()
+                        .map(|x| x.to_string())
+                        .collect::<Vec<String>>();
+                    error.add(&format!("in:{}", string_items.join(",")));
                 }
             },
         )
@@ -202,10 +206,12 @@ macro_rules! rule_lenght_min {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if v.len() < $min {
-                        error.add(&format!("lenght_min:{}", $min));
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .lenght_min($min)
+                {
+                    error.add(&format!("lenght_min:{}", $min));
                 }
             },
         )
@@ -218,10 +224,12 @@ macro_rules! rule_lenght_max {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if v.len() > $max {
-                        error.add(&format!("lenght_max:{}", $max));
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .lenght_max($max)
+                {
+                    error.add(&format!("lenght_max:{}", $max));
                 }
             },
         )
@@ -234,10 +242,30 @@ macro_rules! rule_lenght_eq {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if v.len() != $eq {
-                        error.add(&format!("lenght_eq:{}", $eq));
-                    }
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .lenght_eq($eq)
+                {
+                    error.add(&format!("lenght_eq:{}", $eq));
+                }
+            },
+        )
+    };
+}
+
+#[macro_export]
+macro_rules! rule_lenght_ne {
+    ($name:ident, $ne:expr) => {
+        $crate::Rule::new(
+            stringify!($name),
+            |obj: &Self, error: &mut $crate::error::ValidationError| {
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if !$crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .lenght_eq($ne)
+                {
+                    error.add(&format!("lenght_ne:{}", $ne));
                 }
             },
         )
@@ -250,19 +278,21 @@ macro_rules! rule_range {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_range(v, $min, $max) {
-                        let min: String = match $min {
-                            Some(v) => v.to_string(),
-                            None => "-inf".to_string(),
-                        };
-                        let max: String = match $max {
-                            Some(v) => v.to_string(),
-                            None => "+inf".to_string(),
-                        };
+                use $crate::wrappers::rules::SomeOrNumberWrapper;
+                if $crate::wrappers::rules::SomeOrNumber(&obj.$name)
+                    .0
+                    .range($min, $max)
+                {
+                    let min: String = match $min {
+                        Some(v) => v.to_string(),
+                        None => "-inf".to_string(),
+                    };
+                    let max: String = match $max {
+                        Some(v) => v.to_string(),
+                        None => "+inf".to_string(),
+                    };
 
-                        error.add(&format!("range:{}-{}", min, max));
-                    }
+                    error.add(&format!("range:{}-{}", min, max));
                 }
             },
         )
@@ -272,10 +302,12 @@ macro_rules! rule_range {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if let Some(v) = &obj.$name {
-                    if !::validator::validate_range(v, Some(&$min), None) {
-                        error.add(format!("range:{}-{}", $min, "inf"));
-                    }
+                use $crate::wrappers::rules::SomeOrNumberWrapper;
+                if $crate::wrappers::rules::SomeOrNumber(&obj.$name)
+                    .0
+                    .range(Some($min), None)
+                {
+                    error.add(format!("range:{}-{}", $min, "inf"));
                 }
             },
         )
