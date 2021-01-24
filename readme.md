@@ -5,6 +5,10 @@ Is a validation crate.
 Validr will allow you to modify your payload after it has been deserialized and then
 will validate it with the rules you give it.
 
+```toml
+validr = "0.1.1"
+```
+
 usage:
 
 ```rust
