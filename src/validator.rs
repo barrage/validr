@@ -66,7 +66,7 @@ where
         ValidationError::new()
     }
 
-    /// Get instance error for field
+    /// Set instance error for field
     fn set_error(&self, key: &str, error: ValidationError) {
         self.errors.lock().unwrap().insert(key.to_string(), error);
     }

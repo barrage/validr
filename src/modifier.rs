@@ -9,7 +9,7 @@ impl<T> Modifier<T>
 where
     T: Clone + for<'de> Deserialize<'de>,
 {
-    /// Construct the new custom rule
+    /// Construct the new custom modifier
     pub fn new<F>(field_name: &str, runner: F) -> Self
     where
         F: Fn(&mut T) -> () + 'static,
@@ -20,7 +20,7 @@ where
         }
     }
 
-    /// Handle the rule validation once its generated
+    /// Handle the modification
     pub fn handle(&self, item: &mut T) {
         (self.runner)(item);
     }
