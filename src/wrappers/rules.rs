@@ -33,11 +33,11 @@ where
     }
     fn accepted(&self) -> bool {
         if self.is_none() {
-            false
+            true
         } else if let Some(v) = self {
-            v.to_string() == "true"
+            v.to_string() != "true"
         } else {
-            false
+            true
         }
     }
     fn email(&self) -> bool {
@@ -200,7 +200,7 @@ impl SomeOrStringWrapper for &bool {
         false
     }
     fn accepted(&self) -> bool {
-        *self == &true
+        *self != &true
     }
     fn email(&self) -> bool {
         false

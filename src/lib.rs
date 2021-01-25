@@ -635,6 +635,8 @@ mod test {
         pub ip_v4: Option<String>,
         pub ip_v6: Option<String>,
         pub another_name: String,
+        pub agree_first: Option<bool>,
+        pub agree_second: bool,
     }
 
     impl Validation for TestObj {
@@ -663,6 +665,8 @@ mod test {
                 rule_ip_v6!(ip_v6),
                 rule_equalt_to!(ip, ip_v4),
                 rule_not_equalt_to!(ip, ip_v6),
+                rule_accepted!(agree_first),
+                rule_accepted!(agree_second),
             ]
         }
     }
@@ -689,6 +693,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         let response = test_actix_route_handler(web::Json(data)).await;
@@ -706,6 +712,8 @@ mod test {
             ip_v4: Some("127.1.1.1".to_string()),
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         let response = obj.validate().unwrap();
@@ -723,6 +731,8 @@ mod test {
             ip_v4: Some("127.1.1.1".to_string()),
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         let response = obj.validate().unwrap();
@@ -740,6 +750,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -761,6 +773,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -782,6 +796,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -803,6 +819,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -824,6 +842,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -847,6 +867,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -870,6 +892,8 @@ mod test {
             ip_v4: None,
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -891,6 +915,8 @@ mod test {
             ip_v4: Some("invalid_ip_v4".to_string()),
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -912,6 +938,8 @@ mod test {
             ip_v4: None,
             ip_v6: Some("invalid_ip_v6".to_string()),
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -933,6 +961,8 @@ mod test {
             ip_v4: Some("127.0.0.1".to_string()),
             ip_v6: Some("::1".to_string()),
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -958,6 +988,8 @@ mod test {
             ip_v4: Some("127.0.0.2".to_string()),
             ip_v6: None,
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -981,6 +1013,8 @@ mod test {
             ip_v4: Some("127.0.0.2".to_string()),
             ip_v6: Some("127.0.0.1".to_string()),
             another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: true,
         };
 
         match obj.validate() {
@@ -988,6 +1022,56 @@ mod test {
             Err(e) => match e.get_error("ip") {
                 Ok(e) => {
                     assert!(e.contains("not_equalt_to:ip==ip_v6"))
+                }
+                Err(_) => (),
+            },
+        };
+    }
+
+    #[test]
+    fn test_fail_accepted_rule_in_option() {
+        let obj = TestObj {
+            name: "".to_string(),
+            email: None,
+            age: None,
+            ip: Some("127.0.0.1".to_string()),
+            ip_v4: Some("127.0.0.2".to_string()),
+            ip_v6: Some("127.0.0.1".to_string()),
+            another_name: "".to_string(),
+            agree_first: Some(false),
+            agree_second: true,
+        };
+
+        match obj.validate() {
+            Ok(_) => panic!("Was expected to validate agree_first"),
+            Err(e) => match e.get_error("agree_first") {
+                Ok(e) => {
+                    assert!(e.contains("accepted"))
+                }
+                Err(_) => (),
+            },
+        };
+    }
+
+    #[test]
+    fn test_fail_accepted_rule() {
+        let obj = TestObj {
+            name: "".to_string(),
+            email: None,
+            age: None,
+            ip: Some("127.0.0.1".to_string()),
+            ip_v4: Some("127.0.0.2".to_string()),
+            ip_v6: Some("127.0.0.1".to_string()),
+            another_name: "".to_string(),
+            agree_first: Some(true),
+            agree_second: false,
+        };
+
+        match obj.validate() {
+            Ok(_) => panic!("Was expected to validate agree_second"),
+            Err(e) => match e.get_error("agree_second") {
+                Ok(e) => {
+                    assert!(e.contains("accepted"))
                 }
                 Err(_) => (),
             },
