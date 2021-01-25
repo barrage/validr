@@ -1,7 +1,3 @@
-//! # Validr
-//!
-//! Is a validation crate.
-//!
 //! Validr will allow you to modify your payload after it has been deserialized and then
 //! will validate it with the rules you give it.
 //!
@@ -58,9 +54,38 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present
 //! For `String` it will check if it's not empty.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_required!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_required!(field_name_on_self)]
+//!     }
+//! }
+//! ```
+//!
+//! ## Accepted
+//!
+//! This rule will work for `Option<bool>` where it checks if the field is present and true,
+//! and it will work for `bool` where it checks that its true.
+//!
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<bool>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_accepted!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -69,9 +94,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid email
 //! For `String` it will check if it's valid email.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_email!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_email!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -80,9 +114,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid url
 //! For `String` it will check if it's valid url.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_url!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_url!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -91,9 +134,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid phone number
 //! For `String` it will check if it's valid phone number.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_phone!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_phone!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -102,9 +154,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has no control characters
 //! For `String` it will check if the field has no control characters
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_non_control_character!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_non_control_character!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -113,9 +174,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid IP
 //! For `String` it will check if it's valid IP.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_ip!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_ip!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -124,9 +194,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid IP V4
 //! For `String` it will check if it's valid IP V4.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_ip_v4!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_ip_v4!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -135,9 +214,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid IP V6
 //! For `String` it will check if it's valid IP V6.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_ip_v6!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_ip_v6!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -146,9 +234,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and valid CC number
 //! For `String` it will check if it's valid CC number.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_credit_card!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_credit_card!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -157,9 +254,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and contains given `needle`
 //! For `String` it will check if it contains given `needle`.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_contains!(field_name_on_self, "needle")]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_contains!(field_name_on_self, "needle".to_string())]
+//!     }
 //! }
 //! ```
 //!
@@ -167,9 +273,39 @@
 //!
 //! It validates if two given field names are equal.
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_equalt_to!(field_name_on_self, field_name_to_compare_to_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//!     field_name_to_compare_to_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_equalt_to!(field_name_on_self, field_name_to_compare_to_on_self)]
+//!     }
+//! }
+//! ```
+//!
+//! ## Not equal to
+//!
+//! It validates if two given field names are not equal.
+//!
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//!     field_name_to_compare_to_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_not_equalt_to!(field_name_on_self, field_name_to_compare_to_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -178,14 +314,23 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and will match its value to haystack of values
 //! For `String` it will check if its in the haystack value
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![
-//!         rule_in!(field_name_on_self, vec![
-//!             "allowed_value".to_string(),
-//!             "another_allowed_value".to_string()
-//!         ]),
-//!     ]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![
+//!             rule_in!(field_name_on_self, vec![
+//!                 "allowed_value".to_string(),
+//!                 "another_allowed_value".to_string()
+//!             ]),
+//!         ]
+//!     }
 //! }
 //! ```
 //!
@@ -194,9 +339,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `min` number of chars
 //! For `String` it will check if it has `min` number of chars
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_lenght_min!(field_name_on_self, 2)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_lenght_min!(field_name_on_self, 2)]
+//!     }
 //! }
 //! ```
 //!
@@ -205,9 +359,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `max` number of chars
 //! For `String` it will check if it has `max` number of chars
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_lenght_max!(field_name_on_self, 15)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_lenght_max!(field_name_on_self, 15)]
+//!     }
 //! }
 //! ```
 //!
@@ -216,9 +379,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `eq` number of chars
 //! For `String` it will check if it has `eq` number of chars
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_lenght_eq!(field_name_on_self, 10)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_lenght_eq!(field_name_on_self, 10)]
+//!     }
 //! }
 //! ```
 //!
@@ -227,9 +399,18 @@
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `ne` number of chars
 //! For `String` it will check if it has `ne` number of chars
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_lenght_ne!(field_name_on_self, 11)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_lenght_ne!(field_name_on_self, 11)]
+//!     }
 //! }
 //! ```
 //!
@@ -238,9 +419,18 @@
 //! For `Option<T: Into<f64> + PartialOrd + Clone>` it will check that the value is present and within given range.
 //! For `T: Into<f64>` it will check if the value is in the given range
 //!
-//! ```rust,ignore
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![rule_range!(field_name_on_self, 11)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<u8>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![rule_range!(field_name_on_self, Some(10), Some(15))]
+//!     }
 //! }
 //! ```
 //!
@@ -249,16 +439,24 @@
 //! You can always implement a custom validation rule by instead of using provided
 //! macros generate your own `Rule::new()` definition:
 //!
-//! ```rust,ignore
-//! use validr::{Rule, ValidationError};
-//! fn rules(&self) -> Vec<Rule<Self>> {
-//!     vec![
-//!         Rule::new("field_name", |obj: &Self, error: &mut ValidationError| {
-//!             if obj.field_name != "some_validation_rule".to_string() {
-//!                 error.add("my_custom_error_code");
-//!             }
-//!         }),
-//!     ]
+//! ```rust
+//! #[macro_use]
+//! use validr::{Validation, error::ValidationError, Rule};
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name: String,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn rules(&self) -> Vec<Rule<Self>> {
+//!         vec![
+//!             Rule::new("field_name", |obj: &Self, error: &mut ValidationError| {
+//!                 if obj.field_name != "some_validation_rule".to_string() {
+//!                     error.add("my_custom_error_code");
+//!                 }
+//!             }),
+//!         ]
+//!     }
 //! }
 //! ```
 //!
@@ -271,9 +469,18 @@
 //! For `Option<String>` it will check if there is some value and will run the trim on the value.
 //! For `String` it will simply trim it
 //!
-//! ```rust,ignore
-//! fn modifiers(&self) -> Vec<Modifier<Self>> {
-//!     vec![modifier_trim!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn modifiers(&self) -> Vec<Modifier<Self>> {
+//!         vec![modifier_trim!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -282,9 +489,18 @@
 //! For `Option<String>` it will check if there is some value and will run the lowercase on the value.
 //! For `String` it will simply lowercase it
 //!
-//! ```rust,ignore
-//! fn modifiers(&self) -> Vec<Modifier<Self>> {
-//!     vec![modifier_lowercase!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn modifiers(&self) -> Vec<Modifier<Self>> {
+//!         vec![modifier_lowercase!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -293,9 +509,18 @@
 //! For `Option<String>` it will check if there is some value and will run the uppercase on the value.
 //! For `String` it will simply uppercase it
 //!
-//! ```rust,ignore
-//! fn modifiers(&self) -> Vec<Modifier<Self>> {
-//!     vec![modifier_uppercase!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn modifiers(&self) -> Vec<Modifier<Self>> {
+//!         vec![modifier_uppercase!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -304,11 +529,20 @@
 //! For `Option<String>` it will check if there is some value and will run the capitalize on the value.
 //! For `String` it will simply capitalize it
 //!
-//! Capitalize means it will turn the first char of the string to uppercase, and everything else will be lowercase
+//! Capitalize will turn the first char of the string to uppercase, and everything else will be lowercase
 //!
-//! ```rust,ignore
-//! fn modifiers(&self) -> Vec<Modifier<Self>> {
-//!     vec![modifier_capitalize!(field_name_on_self)]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn modifiers(&self) -> Vec<Modifier<Self>> {
+//!         vec![modifier_capitalize!(field_name_on_self)]
+//!     }
 //! }
 //! ```
 //!
@@ -317,14 +551,22 @@
 //! Implementing custom modifier is similar to custom validation rule, you will provide a custom
 //! implementation of `Modifier::new()`:
 //!
-//! ```rust,ignore
-//! use validr::Modifier;
-//! fn modifiers(&self) -> Vec<Modifier<Self>> {
-//!     vec![
-//!         Modifier::new("field_name", |obj: &mut Self| {
-//!             obj.field_name = "new_value".to_string();
-//!         }),
-//!     ]
+//! ```rust
+//! #[macro_use]
+//! use validr::*;
+//! #[derive(serde::Deserialize, Clone)]
+//! struct Test {
+//!     field_name_on_self: Option<String>,
+//! }
+//!
+//! impl Validation for Test {
+//!     fn modifiers(&self) -> Vec<Modifier<Self>> {
+//!         vec![
+//!             Modifier::new("field_name_on_self", |obj: &mut Self| {
+//!                 obj.field_name_on_self = Some("new_value".to_string());
+//!             }),
+//!         ]
+//!     }
 //! }
 //! ```
 //!
@@ -359,6 +601,7 @@ pub trait Validation: Clone + for<'de> Deserialize<'de> {
 
     /// This will run the validation and return the object if all the validations pass.
     /// Object will be modified by all the modifiers and ready for using further
+    #[inline]
     fn validate(self) -> Result<Self, error::ValidationErrors> {
         let rules = self.rules();
         let modifiers = self.modifiers();
@@ -418,6 +661,8 @@ mod test {
                 rule_ip!(ip),
                 rule_ip_v4!(ip_v4),
                 rule_ip_v6!(ip_v6),
+                rule_equalt_to!(ip, ip_v4),
+                rule_not_equalt_to!(ip, ip_v6),
             ]
         }
     }
@@ -457,8 +702,8 @@ mod test {
             name: " John".to_string(),
             email: None,
             age: None,
-            ip: None,
-            ip_v4: None,
+            ip: Some("127.1.1.1".to_string()),
+            ip_v4: Some("127.1.1.1".to_string()),
             ip_v6: None,
             another_name: "".to_string(),
         };
@@ -474,8 +719,8 @@ mod test {
             name: "john".to_string(),
             email: None,
             age: None,
-            ip: None,
-            ip_v4: None,
+            ip: Some("127.1.1.1".to_string()),
+            ip_v4: Some("127.1.1.1".to_string()),
             ip_v6: None,
             another_name: "".to_string(),
         };
@@ -697,6 +942,52 @@ mod test {
                     assert!(!e.contains("ip"));
                     assert!(!e.contains("ip_v4"));
                     assert!(!e.contains("ip_v6"));
+                }
+                Err(_) => (),
+            },
+        };
+    }
+
+    #[test]
+    fn test_equal_to_rule() {
+        let obj = TestObj {
+            name: "".to_string(),
+            email: None,
+            age: None,
+            ip: Some("127.0.0.1".to_string()),
+            ip_v4: Some("127.0.0.2".to_string()),
+            ip_v6: None,
+            another_name: "".to_string(),
+        };
+
+        match obj.validate() {
+            Ok(_) => panic!("Was expected to validate IP all properties"),
+            Err(e) => match e.get_error("ip") {
+                Ok(e) => {
+                    assert!(e.contains("equalt_to:ip!=ip_v4"))
+                }
+                Err(_) => (),
+            },
+        };
+    }
+
+    #[test]
+    fn test_not_equal_to_rule() {
+        let obj = TestObj {
+            name: "".to_string(),
+            email: None,
+            age: None,
+            ip: Some("127.0.0.1".to_string()),
+            ip_v4: Some("127.0.0.2".to_string()),
+            ip_v6: Some("127.0.0.1".to_string()),
+            another_name: "".to_string(),
+        };
+
+        match obj.validate() {
+            Ok(_) => panic!("Was expected to validate IP all properties"),
+            Err(e) => match e.get_error("ip") {
+                Ok(e) => {
+                    assert!(e.contains("not_equalt_to:ip==ip_v6"))
                 }
                 Err(_) => (),
             },

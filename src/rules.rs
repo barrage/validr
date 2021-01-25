@@ -17,6 +17,24 @@ macro_rules! rule_required {
 }
 
 #[macro_export]
+macro_rules! rule_accepted {
+    ($name:ident) => {
+        $crate::Rule::new(
+            stringify!($name),
+            |obj: &Self, error: &mut $crate::error::ValidationError| {
+                use $crate::wrappers::rules::SomeOrStringWrapper;
+                if $crate::wrappers::rules::SomeOrString(&obj.$name)
+                    .0
+                    .accepted()
+                {
+                    error.add("accepted");
+                }
+            },
+        )
+    };
+}
+
+#[macro_export]
 macro_rules! rule_email {
     ($name:ident) => {
         $crate::Rule::new(
@@ -166,12 +184,30 @@ macro_rules! rule_equalt_to {
         $crate::Rule::new(
             stringify!($name),
             |obj: &Self, error: &mut $crate::error::ValidationError| {
-                if obj.$name != obj.$second_name {
-                    error.add(
+                if &obj.$name != &obj.$second_name {
+                    error.add(&format!(
                         "equalt_to:{}!={}",
                         stringify!($name),
                         stringify!($second_name),
-                    );
+                    ));
+                }
+            },
+        )
+    };
+}
+
+#[macro_export]
+macro_rules! rule_not_equalt_to {
+    ($name:ident, $second_name:ident) => {
+        $crate::Rule::new(
+            stringify!($name),
+            |obj: &Self, error: &mut $crate::error::ValidationError| {
+                if &obj.$name == &obj.$second_name {
+                    error.add(&format!(
+                        "not_equalt_to:{}=={}",
+                        stringify!($name),
+                        stringify!($second_name),
+                    ));
                 }
             },
         )

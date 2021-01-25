@@ -2,6 +2,7 @@ use std::string::ToString;
 
 pub trait SomeOrStringWrapper {
     fn required(&self) -> bool;
+    fn accepted(&self) -> bool;
     fn email(&self) -> bool;
     fn url(&self) -> bool;
     fn phone(&self) -> bool;
@@ -26,6 +27,15 @@ where
             true
         } else if let Some(v) = self {
             v.to_string().is_empty()
+        } else {
+            false
+        }
+    }
+    fn accepted(&self) -> bool {
+        if self.is_none() {
+            false
+        } else if let Some(v) = self {
+            v.to_string() == "true"
         } else {
             false
         }
@@ -134,6 +144,9 @@ impl SomeOrStringWrapper for &String {
     fn required(&self) -> bool {
         self.is_empty()
     }
+    fn accepted(&self) -> bool {
+        *self == "true"
+    }
     fn email(&self) -> bool {
         validator::validate_email(*self)
     }
@@ -179,6 +192,57 @@ impl SomeOrStringWrapper for &String {
     }
     fn lenght_eq(&self, eq: usize) -> bool {
         self.len() != eq
+    }
+}
+
+impl SomeOrStringWrapper for &bool {
+    fn required(&self) -> bool {
+        false
+    }
+    fn accepted(&self) -> bool {
+        *self == &true
+    }
+    fn email(&self) -> bool {
+        false
+    }
+    fn url(&self) -> bool {
+        false
+    }
+    fn phone(&self) -> bool {
+        false
+    }
+    fn non_control_character(&self) -> bool {
+        false
+    }
+    fn ip(&self) -> bool {
+        false
+    }
+    fn ip_v4(&self) -> bool {
+        false
+    }
+    fn ip_v6(&self) -> bool {
+        false
+    }
+    fn credit_card(&self) -> bool {
+        false
+    }
+    fn rule_contains(&self, _needle: String) -> bool {
+        false
+    }
+    fn r#in<B>(&self, _haystack: Vec<B>) -> bool
+    where
+        B: ToString,
+    {
+        false
+    }
+    fn lenght_min(&self, _min: usize) -> bool {
+        false
+    }
+    fn lenght_max(&self, _max: usize) -> bool {
+        false
+    }
+    fn lenght_eq(&self, _eq: usize) -> bool {
+        false
     }
 }
 
