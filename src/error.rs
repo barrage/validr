@@ -93,6 +93,11 @@ impl ValidationErrors {
             Err(())
         }
     }
+
+    /// Return all the errors
+    pub fn get_errors(&self) -> HashMap<String, ValidationError> {
+        self.errors.clone()
+    }
 }
 
 /// Allow the use of "{}" format specifier
