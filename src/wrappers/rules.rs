@@ -111,8 +111,7 @@ where
             !haystack
                 .iter()
                 .map(|x| x.to_string())
-                .collect::<Vec<String>>()
-                .contains(&v.to_string())
+                .any(|x| x == v.to_string())
         } else {
             false
         }
@@ -181,8 +180,7 @@ impl SomeOrStringWrapper for &String {
         haystack
             .iter()
             .map(|x| x.to_string())
-            .collect::<Vec<String>>()
-            .contains(&self.to_string())
+            .any(|x| x == self.to_string())
     }
     fn lenght_min(&self, min: usize) -> bool {
         self.len() < min
@@ -262,7 +260,7 @@ where
         if let Some(v) = self {
             let value: f64 = v.clone().into();
             if let Some(max) = max {
-                if value.clone() > max.into() {
+                if value > max.into() {
                     return true;
                 }
             }

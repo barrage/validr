@@ -41,18 +41,12 @@ where
 
     /// Check if item attribute exists with some rules already defined
     pub fn contains_rule(&self, key: &str) -> bool {
-        match self.rules.iter().position(|r| &r.field == key) {
-            Some(_) => true,
-            _ => false,
-        }
+        matches!(self.rules.iter().position(|r| r.field == key), Some(_))
     }
 
     /// Check if item attribute exists with some modifiers already defined
     pub fn contains_modifier(&self, key: &str) -> bool {
-        match self.modifiers.iter().position(|r| &r.field == key) {
-            Some(_) => true,
-            _ => false,
-        }
+        matches!(self.modifiers.iter().position(|r| r.field == key), Some(_))
     }
 
     /// Get instance error for field
@@ -98,7 +92,7 @@ where
         for rule in &self.rules {
             let mut error = self.get_error(&rule.field);
 
-            &rule.handle(&self.item, &mut error);
+            rule.handle(&self.item, &mut error);
 
             if error.has_errors() {
                 self.set_error(&rule.field, error.clone());

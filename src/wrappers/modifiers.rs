@@ -8,21 +8,21 @@ pub trait SomeOrStringWrapper {
 impl SomeOrStringWrapper for Option<String> {
     fn m_trim(self) -> Self {
         if let Some(v) = self {
-            Some(v.clone().trim().to_string())
+            Some(v.trim().to_string())
         } else {
             None
         }
     }
     fn m_lowercase(self) -> Self {
         if let Some(v) = self {
-            Some(v.clone().to_lowercase())
+            Some(v.to_lowercase())
         } else {
             None
         }
     }
     fn m_uppercase(self) -> Self {
         if let Some(v) = self {
-            Some(v.clone().to_uppercase())
+            Some(v.to_uppercase())
         } else {
             None
         }

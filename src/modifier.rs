@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 pub struct Modifier<T> {
     pub field: String,
-    runner: Box<dyn Fn(&mut T) -> () + 'static>,
+    runner: Box<dyn Fn(&mut T) + 'static>,
 }
 
 impl<T> Modifier<T>
@@ -12,7 +12,7 @@ where
     /// Construct the new custom modifier
     pub fn new<F>(field_name: &str, runner: F) -> Self
     where
-        F: Fn(&mut T) -> () + 'static,
+        F: Fn(&mut T) + 'static,
     {
         Modifier::<T> {
             field: field_name.to_string(),

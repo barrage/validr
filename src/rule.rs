@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 pub struct Rule<T> {
     pub field: String,
-    runner: Box<dyn Fn(&T, &mut ValidationError) -> () + 'static>,
+    runner: Box<dyn Fn(&T, &mut ValidationError) + 'static>,
 }
 
 impl<T> Rule<T>
@@ -13,7 +13,7 @@ where
     /// Construct the new custom rule
     pub fn new<F>(field_name: &str, runner: F) -> Self
     where
-        F: Fn(&T, &mut ValidationError) -> () + 'static,
+        F: Fn(&T, &mut ValidationError) + 'static,
     {
         Rule::<T> {
             field: field_name.to_string(),

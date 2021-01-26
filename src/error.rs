@@ -11,6 +11,12 @@ pub struct ValidationError {
     errors: Vec<String>,
 }
 
+impl Default for ValidationError {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ValidationError {
     /// Get new validation error
     pub fn new() -> Self {
@@ -32,21 +38,27 @@ impl ValidationError {
 
     /// Check if it already contains certain error code
     pub fn contains(&self, error_code: &str) -> bool {
-        match self.errors.iter().position(|e| e.starts_with(error_code)) {
-            Some(_) => true,
-            _ => false,
-        }
+        matches!(
+            self.errors.iter().position(|e| e.starts_with(error_code)),
+            Some(_)
+        )
     }
 
     /// Check if validation error has anything to show
     pub fn has_errors(&self) -> bool {
-        !self.field.is_empty() && self.errors.len() > 0
+        !self.field.is_empty() && !self.errors.is_empty()
     }
 }
 
 #[derive(Clone, Debug, Serialize, PartialEq)]
 pub struct ValidationErrors {
     errors: HashMap<String, ValidationError>,
+}
+
+impl Default for ValidationErrors {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl ValidationErrors {
@@ -79,18 +91,18 @@ impl ValidationErrors {
 
     /// Check if there are any validation errors
     pub fn has_errors(&self) -> bool {
-        self.errors.len() > 0
+        !self.errors.is_empty()
     }
 
     /// Copy single error from the hash map
-    pub fn get_error(&self, key: &str) -> Result<ValidationError, ()> {
+    pub fn get_error(&self, key: &str) -> Result<ValidationError, String> {
         if self.has_errors() && self.errors.contains_key(key) {
             match self.errors.get_key_value(key) {
                 Some((_k, error)) => Ok(error.clone()),
-                None => Err(()),
+                None => Err("no_error".to_string()),
             }
         } else {
-            Err(())
+            Err("no_error".to_string())
         }
     }
 
