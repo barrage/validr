@@ -177,7 +177,7 @@ impl SomeOrStringWrapper for &String {
     where
         B: ToString,
     {
-        haystack
+        !haystack
             .iter()
             .map(|x| x.to_string())
             .any(|x| x == self.to_string())
