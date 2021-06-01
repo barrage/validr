@@ -10,6 +10,7 @@ Validr will allow you to modify your payload after it has been deserialized and 
 will validate it with the rules you give it.
 
 usage:
+
 ```rust
 #[macro_use]
 use validr::*;
@@ -54,6 +55,7 @@ async fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
 ```
 
 ## Validation rules
+
 There are some rules predefined and provided for you in a form of a macro
 to simply include in your validation.
 
@@ -342,7 +344,7 @@ impl Validation for Test {
 }
 ```
 
-### Lenght min
+### length min
 
 For `Option<T: ToString + Clone>` it will check if the field is present and has `min` number of chars
 For `String` it will check if it has `min` number of chars
@@ -357,12 +359,12 @@ struct Test {
 
 impl Validation for Test {
     fn rules(&self) -> Vec<Rule<Self>> {
-        vec![rule_lenght_min!(field_name_on_self, 2)]
+        vec![rule_length_min!(field_name_on_self, 2)]
     }
 }
 ```
 
-### Lenght max
+### length max
 
 For `Option<T: ToString + Clone>` it will check if the field is present and has `max` number of chars
 For `String` it will check if it has `max` number of chars
@@ -377,12 +379,12 @@ struct Test {
 
 impl Validation for Test {
     fn rules(&self) -> Vec<Rule<Self>> {
-        vec![rule_lenght_max!(field_name_on_self, 15)]
+        vec![rule_length_max!(field_name_on_self, 15)]
     }
 }
 ```
 
-### Lenght equal
+### length equal
 
 For `Option<T: ToString + Clone>` it will check if the field is present and has `eq` number of chars
 For `String` it will check if it has `eq` number of chars
@@ -397,12 +399,12 @@ struct Test {
 
 impl Validation for Test {
     fn rules(&self) -> Vec<Rule<Self>> {
-        vec![rule_lenght_eq!(field_name_on_self, 10)]
+        vec![rule_length_eq!(field_name_on_self, 10)]
     }
 }
 ```
 
-### Lenght not equal
+### length not equal
 
 For `Option<T: ToString + Clone>` it will check if the field is present and has `ne` number of chars
 For `String` it will check if it has `ne` number of chars
@@ -417,7 +419,7 @@ struct Test {
 
 impl Validation for Test {
     fn rules(&self) -> Vec<Rule<Self>> {
-        vec![rule_lenght_ne!(field_name_on_self, 11)]
+        vec![rule_length_ne!(field_name_on_self, 11)]
     }
 }
 ```
@@ -469,6 +471,7 @@ impl Validation for Test {
 ```
 
 ## Field modifiers
+
 Before running validation rules you can modify the input data to format it in whatever way you want.
 There are some modifiers included, but you can certainly create a custom one to do whatever you want.
 
@@ -578,13 +581,12 @@ impl Validation for Test {
 }
 ```
 
-
 ## License
 
 Licensed under either of
 
-* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
-* MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
+- Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 at your option.
 

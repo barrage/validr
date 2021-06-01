@@ -27,8 +27,8 @@ impl Validation for TestObj {
     fn rules(&self) -> Vec<Rule<Self>> {
         vec![
             rule_required!(name),
-            rule_lenght_min!(name, 2),
-            rule_lenght_max!(name, 10),
+            rule_length_min!(name, 2),
+            rule_length_max!(name, 10),
             rule_email!(email),
             rule_range!(age, Some(15.5), Some(25)),
             rule_in!(
@@ -202,7 +202,7 @@ fn test_if_will_fail_name_too_short() {
     match obj.validate() {
         Ok(_) => panic!("Was expected to validate short 'name' property"),
         Err(e) => match e.get_error("name") {
-            Ok(e) => assert!(e.contains("lenght_min")),
+            Ok(e) => assert!(e.contains("length_min")),
             Err(_) => panic!("Seems like there is no error for 'name' field"),
         },
     };

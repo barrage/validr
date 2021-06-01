@@ -13,9 +13,9 @@ pub trait SomeOrStringWrapper {
     fn credit_card(&self) -> bool;
     fn rule_contains(&self, needle: String) -> bool;
     fn r#in<B: ToString>(&self, haystack: Vec<B>) -> bool;
-    fn lenght_min(&self, min: usize) -> bool;
-    fn lenght_max(&self, max: usize) -> bool;
-    fn lenght_eq(&self, eq: usize) -> bool;
+    fn length_min(&self, min: usize) -> bool;
+    fn length_max(&self, max: usize) -> bool;
+    fn length_eq(&self, eq: usize) -> bool;
 }
 
 impl<A> SomeOrStringWrapper for &Option<A>
@@ -116,21 +116,21 @@ where
             false
         }
     }
-    fn lenght_min(&self, min: usize) -> bool {
+    fn length_min(&self, min: usize) -> bool {
         if let Some(v) = self {
             v.to_string().len() < min
         } else {
             false
         }
     }
-    fn lenght_max(&self, max: usize) -> bool {
+    fn length_max(&self, max: usize) -> bool {
         if let Some(v) = self {
             v.to_string().len() > max
         } else {
             false
         }
     }
-    fn lenght_eq(&self, eq: usize) -> bool {
+    fn length_eq(&self, eq: usize) -> bool {
         if let Some(v) = self {
             v.to_string().len() != eq
         } else {
@@ -182,13 +182,13 @@ impl SomeOrStringWrapper for &String {
             .map(|x| x.to_string())
             .any(|x| x == self.to_string())
     }
-    fn lenght_min(&self, min: usize) -> bool {
+    fn length_min(&self, min: usize) -> bool {
         self.len() < min
     }
-    fn lenght_max(&self, max: usize) -> bool {
+    fn length_max(&self, max: usize) -> bool {
         self.len() > max
     }
-    fn lenght_eq(&self, eq: usize) -> bool {
+    fn length_eq(&self, eq: usize) -> bool {
         self.len() != eq
     }
 }
@@ -233,13 +233,13 @@ impl SomeOrStringWrapper for &bool {
     {
         false
     }
-    fn lenght_min(&self, _min: usize) -> bool {
+    fn length_min(&self, _min: usize) -> bool {
         false
     }
-    fn lenght_max(&self, _max: usize) -> bool {
+    fn length_max(&self, _max: usize) -> bool {
         false
     }
-    fn lenght_eq(&self, _eq: usize) -> bool {
+    fn length_eq(&self, _eq: usize) -> bool {
         false
     }
 }
