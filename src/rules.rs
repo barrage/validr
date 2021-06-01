@@ -237,7 +237,7 @@ macro_rules! rule_in {
 }
 
 #[macro_export]
-macro_rules! rule_lenght_min {
+macro_rules! rule_length_min {
     ($name:ident, $min:expr) => {
         $crate::Rule::new(
             stringify!($name),
@@ -245,9 +245,9 @@ macro_rules! rule_lenght_min {
                 use $crate::wrappers::rules::SomeOrStringWrapper;
                 if $crate::wrappers::rules::SomeOrString(&obj.$name)
                     .0
-                    .lenght_min($min)
+                    .length_min($min)
                 {
-                    error.add(&format!("lenght_min:{}", $min));
+                    error.add(&format!("length_min:{}", $min));
                 }
             },
         )
@@ -255,7 +255,7 @@ macro_rules! rule_lenght_min {
 }
 
 #[macro_export]
-macro_rules! rule_lenght_max {
+macro_rules! rule_length_max {
     ($name:ident, $max:expr) => {
         $crate::Rule::new(
             stringify!($name),
@@ -263,9 +263,9 @@ macro_rules! rule_lenght_max {
                 use $crate::wrappers::rules::SomeOrStringWrapper;
                 if $crate::wrappers::rules::SomeOrString(&obj.$name)
                     .0
-                    .lenght_max($max)
+                    .length_max($max)
                 {
-                    error.add(&format!("lenght_max:{}", $max));
+                    error.add(&format!("length_max:{}", $max));
                 }
             },
         )
@@ -273,7 +273,7 @@ macro_rules! rule_lenght_max {
 }
 
 #[macro_export]
-macro_rules! rule_lenght_eq {
+macro_rules! rule_length_eq {
     ($name:ident, $eq:expr) => {
         $crate::Rule::new(
             stringify!($name),
@@ -281,9 +281,9 @@ macro_rules! rule_lenght_eq {
                 use $crate::wrappers::rules::SomeOrStringWrapper;
                 if $crate::wrappers::rules::SomeOrString(&obj.$name)
                     .0
-                    .lenght_eq($eq)
+                    .length_eq($eq)
                 {
-                    error.add(&format!("lenght_eq:{}", $eq));
+                    error.add(&format!("length_eq:{}", $eq));
                 }
             },
         )
@@ -291,7 +291,7 @@ macro_rules! rule_lenght_eq {
 }
 
 #[macro_export]
-macro_rules! rule_lenght_ne {
+macro_rules! rule_length_ne {
     ($name:ident, $ne:expr) => {
         $crate::Rule::new(
             stringify!($name),
@@ -299,9 +299,9 @@ macro_rules! rule_lenght_ne {
                 use $crate::wrappers::rules::SomeOrStringWrapper;
                 if !$crate::wrappers::rules::SomeOrString(&obj.$name)
                     .0
-                    .lenght_eq($ne)
+                    .length_eq($ne)
                 {
-                    error.add(&format!("lenght_ne:{}", $ne));
+                    error.add(&format!("length_ne:{}", $ne));
                 }
             },
         )

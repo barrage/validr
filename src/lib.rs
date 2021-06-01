@@ -334,7 +334,7 @@
 //! }
 //! ```
 //!
-//! ## Lenght min
+//! ## length min
 //!
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `min` number of chars
 //! For `String` it will check if it has `min` number of chars
@@ -349,12 +349,12 @@
 //!
 //! impl Validation for Test {
 //!     fn rules(&self) -> Vec<Rule<Self>> {
-//!         vec![rule_lenght_min!(field_name_on_self, 2)]
+//!         vec![rule_length_min!(field_name_on_self, 2)]
 //!     }
 //! }
 //! ```
 //!
-//! ## Lenght max
+//! ## length max
 //!
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `max` number of chars
 //! For `String` it will check if it has `max` number of chars
@@ -369,12 +369,12 @@
 //!
 //! impl Validation for Test {
 //!     fn rules(&self) -> Vec<Rule<Self>> {
-//!         vec![rule_lenght_max!(field_name_on_self, 15)]
+//!         vec![rule_length_max!(field_name_on_self, 15)]
 //!     }
 //! }
 //! ```
 //!
-//! ## Lenght equal
+//! ## length equal
 //!
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `eq` number of chars
 //! For `String` it will check if it has `eq` number of chars
@@ -389,12 +389,12 @@
 //!
 //! impl Validation for Test {
 //!     fn rules(&self) -> Vec<Rule<Self>> {
-//!         vec![rule_lenght_eq!(field_name_on_self, 10)]
+//!         vec![rule_length_eq!(field_name_on_self, 10)]
 //!     }
 //! }
 //! ```
 //!
-//! ## Lenght not equal
+//! ## length not equal
 //!
 //! For `Option<T: ToString + Clone>` it will check if the field is present and has `ne` number of chars
 //! For `String` it will check if it has `ne` number of chars
@@ -409,7 +409,7 @@
 //!
 //! impl Validation for Test {
 //!     fn rules(&self) -> Vec<Rule<Self>> {
-//!         vec![rule_lenght_ne!(field_name_on_self, 11)]
+//!         vec![rule_length_ne!(field_name_on_self, 11)]
 //!     }
 //! }
 //! ```
