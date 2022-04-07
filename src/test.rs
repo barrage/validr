@@ -10,7 +10,6 @@ struct TestObj {
     pub ip: Option<String>,
     pub ip_v4: Option<String>,
     pub ip_v6: Option<String>,
-    pub another_name: String,
     pub agree_first: Option<bool>,
     pub agree_second: bool,
 }
@@ -59,7 +58,7 @@ impl Validation for TestObj2 {
 }
 
 /// Test actix route handler
-async fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
+fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
     match test.into_inner().validate() {
         Ok(item) => {
             println!("This is your data validated and modified: {:?}", item);
@@ -70,7 +69,7 @@ async fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
 }
 
 /// Test actix route handler
-async fn test_actix_route_handler_2(test: web::Json<TestObj2>) -> HttpResponse {
+fn test_actix_route_handler_2(test: web::Json<TestObj2>) -> HttpResponse {
     match test.into_inner().validate() {
         Ok(item) => {
             println!("This is your data validated and modified: {:?}", item);
@@ -80,33 +79,30 @@ async fn test_actix_route_handler_2(test: web::Json<TestObj2>) -> HttpResponse {
     }
 }
 
-#[actix_web::main]
 #[test]
-async fn test_regular_string_in_rule_passing() {
+fn test_regular_string_in_rule_passing() {
     let data = TestObj2 {
         name: "one".to_string(),
     };
 
-    let response = test_actix_route_handler_2(web::Json(data)).await;
+    let response = test_actix_route_handler_2(web::Json(data));
 
     assert_eq!(response.status(), http::StatusCode::OK);
 }
 
-#[actix_web::main]
 #[test]
-async fn test_regular_string_in_rule_failing() {
+fn test_regular_string_in_rule_failing() {
     let data = TestObj2 {
         name: "three".to_string(),
     };
 
-    let response = test_actix_route_handler_2(web::Json(data)).await;
+    let response = test_actix_route_handler_2(web::Json(data));
 
     assert_eq!(response.status(), http::StatusCode::UNPROCESSABLE_ENTITY);
 }
 
-#[actix_web::main]
 #[test]
-async fn test_actix_integration_fails_validation() {
+fn test_actix_integration_fails_validation() {
     let data = TestObj {
         name: "".to_string(),
         email: None,
@@ -114,12 +110,11 @@ async fn test_actix_integration_fails_validation() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
 
-    let response = test_actix_route_handler(web::Json(data)).await;
+    let response = test_actix_route_handler(web::Json(data));
 
     assert_eq!(response.status(), http::StatusCode::UNPROCESSABLE_ENTITY);
 }
@@ -133,7 +128,6 @@ fn test_it_will_trim_name() {
         ip: Some("127.1.1.1".to_string()),
         ip_v4: Some("127.1.1.1".to_string()),
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -152,7 +146,6 @@ fn test_it_will_capitalize_name() {
         ip: Some("127.1.1.1".to_string()),
         ip_v4: Some("127.1.1.1".to_string()),
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -171,7 +164,6 @@ fn test_if_will_fail_required_name() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -194,7 +186,6 @@ fn test_if_will_fail_name_too_short() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -217,7 +208,6 @@ fn test_if_will_fail_valid_email() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -240,7 +230,6 @@ fn test_try_to_pass_rule_in() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -263,7 +252,6 @@ fn test_try_to_fail_rule_in() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -286,7 +274,6 @@ fn test_if_it_fail_age_test() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -309,7 +296,6 @@ fn test_age_fails_in_rule() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -334,7 +320,6 @@ fn test_age_fails_range_rule() {
         ip: None,
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -359,7 +344,6 @@ fn test_if_ip_fails() {
         ip: Some("invalid_ip".to_string()),
         ip_v4: None,
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -382,7 +366,6 @@ fn test_if_ip_v4_fails() {
         ip: None,
         ip_v4: Some("invalid_ip_v4".to_string()),
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -405,7 +388,6 @@ fn test_if_ip_v6_fails() {
         ip: None,
         ip_v4: None,
         ip_v6: Some("invalid_ip_v6".to_string()),
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -428,7 +410,6 @@ fn test_if_ips_are_ok() {
         ip: Some("127.0.0.1".to_string()),
         ip_v4: Some("127.0.0.1".to_string()),
         ip_v6: Some("::1".to_string()),
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -455,7 +436,6 @@ fn test_equal_to_rule() {
         ip: Some("127.0.0.1".to_string()),
         ip_v4: Some("127.0.0.2".to_string()),
         ip_v6: None,
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -480,7 +460,6 @@ fn test_not_equal_to_rule() {
         ip: Some("127.0.0.1".to_string()),
         ip_v4: Some("127.0.0.2".to_string()),
         ip_v6: Some("127.0.0.1".to_string()),
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: true,
     };
@@ -505,7 +484,6 @@ fn test_fail_accepted_rule_in_option() {
         ip: Some("127.0.0.1".to_string()),
         ip_v4: Some("127.0.0.2".to_string()),
         ip_v6: Some("127.0.0.1".to_string()),
-        another_name: "".to_string(),
         agree_first: Some(false),
         agree_second: true,
     };
@@ -530,7 +508,6 @@ fn test_fail_accepted_rule() {
         ip: Some("127.0.0.1".to_string()),
         ip_v4: Some("127.0.0.2".to_string()),
         ip_v6: Some("127.0.0.1".to_string()),
-        another_name: "".to_string(),
         agree_first: Some(true),
         agree_second: false,
     };

@@ -7,34 +7,20 @@ pub trait SomeOrStringWrapper {
 
 impl SomeOrStringWrapper for Option<String> {
     fn m_trim(self) -> Self {
-        if let Some(v) = self {
-            Some(v.trim().to_string())
-        } else {
-            None
-        }
+        self.map(|v| v.trim().to_string())
     }
     fn m_lowercase(self) -> Self {
-        if let Some(v) = self {
-            Some(v.to_lowercase())
-        } else {
-            None
-        }
+        self.map(|v| v.to_lowercase())
     }
     fn m_uppercase(self) -> Self {
-        if let Some(v) = self {
-            Some(v.to_uppercase())
-        } else {
-            None
-        }
+        self.map(|v| v.to_uppercase())
     }
     fn m_capitalize(self) -> Self {
         if let Some(v) = self {
             let mut c = v.chars();
 
-            match c.next() {
-                None => None,
-                Some(f) => Some(f.to_uppercase().collect::<String>() + c.as_str()),
-            }
+            c.next()
+                .map(|f| f.to_uppercase().collect::<String>() + c.as_str())
         } else {
             None
         }

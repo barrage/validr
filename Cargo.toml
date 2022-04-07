@@ -1,6 +1,6 @@
 [package]
 name = "validr"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Tibor Hudik <tibor@barrage.net>"]
 edition = "2018"
 license = "MIT"
@@ -12,9 +12,14 @@ repository = "https://github.com/barrage/validr"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "^3"
-actix-http = "^2"
+actix-web = { version = "^4", default-features = false }
 futures-util = "^0.3.5"
 serde = { version = "1.0.118", features = ["serde_derive"] }
 serde_json = "1.0.60"
-validator = { version = "0.12", features = ["phone", "card", "unic"] }
+lazy_static = "1.4.0"
+unic-ucd-common = "0.9.0"
+card-validate = "2.2.2"
+url = "2.2.2"
+regex = "1.5.5"
+idna = "0.2.0"
+phonenumber = "*"

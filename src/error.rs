@@ -1,6 +1,4 @@
-use actix_http::{Error, Response};
-use actix_web::{HttpRequest, HttpResponse, Responder, ResponseError};
-use futures_util::future::{ok, Ready};
+use actix_web::{body::BoxBody, HttpRequest, HttpResponse, Responder, ResponseError};
 use serde::Serialize;
 use std::collections::HashMap;
 use std::error::Error as StdError;
@@ -78,8 +76,8 @@ impl ValidationErrors {
             e = self.errors.remove(&name).unwrap();
 
             for rule in &error.errors {
-                if !e.contains(&rule) {
-                    e.add(&rule);
+                if !e.contains(rule) {
+                    e.add(rule);
                 }
             }
         }
@@ -135,12 +133,9 @@ impl ResponseError for ValidationErrors {
 
 /// Allow the error to be returned into responder for actix right away
 impl Responder for ValidationErrors {
-    type Error = ValidationErrors;
+    type Body = BoxBody;
 
-    type Future = Ready<Result<Response, Self::Error>>;
-
-    fn respond_to(self, _: &HttpRequest) -> Self::Future {
-        let err: Error = self.into();
-        ok(err.into())
+    fn respond_to(self, _: &HttpRequest) -> HttpResponse<Self::Body> {
+        self.error_response()
     }
 }
