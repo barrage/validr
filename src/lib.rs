@@ -576,6 +576,7 @@ mod rule;
 mod rules;
 
 pub mod error;
+pub mod helpers;
 pub mod validator;
 pub mod wrappers;
 

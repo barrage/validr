@@ -42,56 +42,56 @@ where
     }
     fn email(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_email(v.to_string())
+            !crate::helpers::email::validate_email(v.to_string())
         } else {
             false
         }
     }
     fn url(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_url(v.to_string())
+            !crate::helpers::url::validate_url(v.to_string())
         } else {
             false
         }
     }
     fn phone(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_phone(v.to_string())
+            !crate::helpers::phone::validate_phone(v.to_string())
         } else {
             false
         }
     }
     fn non_control_character(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_non_control_character(v.to_string())
+            !crate::helpers::non_control_character::validate_non_control_character(v.to_string())
         } else {
             false
         }
     }
     fn ip(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_ip(v.to_string())
+            !crate::helpers::ip::validate_ip(v.to_string())
         } else {
             false
         }
     }
     fn ip_v4(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_ip_v4(v.to_string())
+            !crate::helpers::ip::validate_ip_v4(v.to_string())
         } else {
             false
         }
     }
     fn ip_v6(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_ip_v6(v.to_string())
+            !crate::helpers::ip::validate_ip_v6(v.to_string())
         } else {
             false
         }
     }
     fn credit_card(&self) -> bool {
         if let Some(v) = self {
-            !validator::validate_credit_card(v.to_string())
+            !crate::helpers::card::validate_credit_card(v.to_string())
         } else {
             false
         }
@@ -147,28 +147,28 @@ impl SomeOrStringWrapper for &String {
         *self == "true"
     }
     fn email(&self) -> bool {
-        validator::validate_email(*self)
+        crate::helpers::email::validate_email(*self)
     }
     fn url(&self) -> bool {
-        validator::validate_url(*self)
+        crate::helpers::url::validate_url(*self)
     }
     fn phone(&self) -> bool {
-        validator::validate_phone(*self)
+        crate::helpers::phone::validate_phone(*self)
     }
     fn non_control_character(&self) -> bool {
-        validator::validate_non_control_character(*self)
+        crate::helpers::non_control_character::validate_non_control_character(*self)
     }
     fn ip(&self) -> bool {
-        validator::validate_ip(*self)
+        crate::helpers::ip::validate_ip(*self)
     }
     fn ip_v4(&self) -> bool {
-        validator::validate_ip_v4(*self)
+        crate::helpers::ip::validate_ip_v4(*self)
     }
     fn ip_v6(&self) -> bool {
-        validator::validate_ip_v6(*self)
+        crate::helpers::ip::validate_ip_v6(*self)
     }
     fn credit_card(&self) -> bool {
-        validator::validate_credit_card(*self)
+        crate::helpers::card::validate_credit_card(*self)
     }
     fn rule_contains(&self, needle: String) -> bool {
         self.contains(&needle)

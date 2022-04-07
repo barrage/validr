@@ -3,7 +3,7 @@
 # validr
 
 ```toml
-validr = "0.1.5"
+validr = "0.3.0"
 ```
 
 Validr will allow you to modify your payload after it has been deserialized and then
