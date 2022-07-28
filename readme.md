@@ -3,14 +3,13 @@
 # validr
 
 ```toml
-validr = "0.3.0"
+validr = "0.3.1"
 ```
 
 Validr will allow you to modify your payload after it has been deserialized and then
 will validate it with the rules you give it.
 
 usage:
-
 ```rust
 #[macro_use]
 use validr::*;
@@ -55,7 +54,6 @@ async fn test_actix_route_handler(test: web::Json<TestObj>) -> HttpResponse {
 ```
 
 ## Validation rules
-
 There are some rules predefined and provided for you in a form of a macro
 to simply include in your validation.
 
@@ -471,7 +469,6 @@ impl Validation for Test {
 ```
 
 ## Field modifiers
-
 Before running validation rules you can modify the input data to format it in whatever way you want.
 There are some modifiers included, but you can certainly create a custom one to do whatever you want.
 
@@ -581,12 +578,13 @@ impl Validation for Test {
 }
 ```
 
+
 ## License
 
 Licensed under either of
 
-- Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
-- MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
+* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or https://www.apache.org/licenses/LICENSE-2.0)
+* MIT license ([LICENSE-MIT](LICENSE-MIT) or https://opensource.org/licenses/MIT)
 
 at your option.
 
