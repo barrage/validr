@@ -1,9 +1,9 @@
 use actix_web::{body::BoxBody, HttpRequest, HttpResponse, Responder, ResponseError};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::error::Error as StdError;
 
-#[derive(Clone, Debug, Serialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct ValidationError {
     field: String,
     errors: Vec<String>,
@@ -42,13 +42,33 @@ impl ValidationError {
         )
     }
 
+    /// Check if the error is empty
+    pub fn is_empty(&self) -> bool {
+        self.errors.is_empty()
+    }
+
+    /// Get the number of errors
+    pub fn len(&self) -> usize {
+        self.errors.len()
+    }
+
     /// Check if validation error has anything to show
     pub fn has_errors(&self) -> bool {
         !self.field.is_empty() && !self.errors.is_empty()
     }
+
+    /// Return the error field name
+    pub fn get_name(&self) -> String {
+        self.field.clone()
+    }
+
+    /// Return all the errors
+    pub fn get_errors(&self) -> Vec<String> {
+        self.errors.clone()
+    }
 }
 
-#[derive(Clone, Debug, Serialize, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct ValidationErrors {
     errors: HashMap<String, ValidationError>,
 }
@@ -85,6 +105,16 @@ impl ValidationErrors {
         if e.has_errors() {
             self.errors.insert(name, e);
         }
+    }
+
+    /// Check if the error is empty
+    pub fn is_empty(&self) -> bool {
+        self.errors.is_empty()
+    }
+
+    /// Get the number of errors
+    pub fn len(&self) -> usize {
+        self.errors.len()
     }
 
     /// Check if there are any validation errors
